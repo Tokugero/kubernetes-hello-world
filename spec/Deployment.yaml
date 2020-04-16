@@ -39,6 +39,10 @@ spec:
       - env:
         - name: host
           value: myapp-postgresql
+        - name: PSQL_USERNAME
+          value: postgres
+        - name: PSQL_DBNAME
+          value: postgres
         - name: PSQL_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -62,7 +66,7 @@ spec:
               value: healthy
           periodSeconds: 3
           failureThreshold: 1
-        image: tezzreg.combat-box.com/myapp:0.0.7
+        image: tezzreg.combat-box.com/myapp:1.0.0
         name: myapp
         ports:
         - containerPort: 5000

@@ -6,9 +6,11 @@ app = Flask(__name__)
 query = ("select * from actor order by random() limit 5;")
 host = os.getenv("host")
 password = os.getenv("PSQL_PASSWORD")
+user = os.getenv("PSQL_USERNAME")
+dbname = os.getenv("PSQL_DBNAME")
 
 def callpsql():
-    conn = psycopg2.connect(dbname="postgres", user="postgres", password=password, host=host, port="5432")
+    conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port="5432")
     cur = conn.cursor()
     cur.execute(query)
     results = cur.fetchall()
