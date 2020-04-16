@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: myapp
+  namespace: myapp
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    run: myapp
+status:
+  loadBalancer: {}
+---
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: myapp
+  name: myapp
+  namespace: myapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: myapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: myapp
+    spec:
+      containers:
+      - env:
+        - name: host
+          value: myapp-postgresql
+        - name: PSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: psqlpass
+              key: PSQL_PASSWORD 
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+            httpHeaders:
+            - name: health-check
+              value: healthy
+          periodSeconds: 3
+          failureThreshold: 1
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+            httpHeaders:
+            - name: health-check
+              value: healthy
+          periodSeconds: 3
+          failureThreshold: 1
+        image: tezzreg.combat-box.com/myapp:0.0.7
+        name: myapp
+        ports:
+        - containerPort: 5000
+        resources: {}
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: regcred
+
+status: {}

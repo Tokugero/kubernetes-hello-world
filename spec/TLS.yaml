@@ -1,0 +1,22 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: myapp 
+  namespace: default
+spec:
+  secretName: myapp
+  dnsNames:
+  - myapp.combat-box.com 
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+---
+apiVersion: getambassador.io/v1
+kind: TLSContext
+metadata:
+  namespace: default 
+  name: myapp
+spec:
+  hosts: ["myapp.combat-box.com"]
+  secret: myapp

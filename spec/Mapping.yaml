@@ -1,0 +1,11 @@
+---
+apiVersion: getambassador.io/v1
+kind: Mapping
+metadata:
+  name: myapp 
+  namespace: myapp 
+spec:
+  prefix: /
+  host: myapp.combat-box.com
+  service: myapp.myapp:5000 
+  
