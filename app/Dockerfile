@@ -8,10 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN apt-get update && \
 	apt-get install -y \
 		curl \
-		openssh-server \
-		net-tools \
-		dnsutils \
-		iproute2
+		openssh-server
 
 ADD ./.profile.d /app/.profile.d
 
